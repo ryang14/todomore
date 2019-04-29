@@ -1,0 +1,13 @@
+#login-buttons a {
+    text-decoration: none;
+    color: inherit;
+    margin-right: 70px;
+  }
+
+  @media (max-width: 768px) {
+    #login-buttons a {
+        text-decoration: none;
+        color: inherit;
+        margin-left: 15px;
+      }
+  }
