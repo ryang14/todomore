@@ -39,7 +39,7 @@ Meteor.methods({
 
         const list = Lists.findOne(listId);
 
-        if (list.private && list.owner !== Meteor.userId()) {
+        if (list.owner !== Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
         }
 

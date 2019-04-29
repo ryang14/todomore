@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Lists } from '../api/lists.js';
 
 export const Tasks = new Mongo.Collection('tasks');
 
@@ -18,21 +19,23 @@ if (Meteor.isServer) {
 
 
 Meteor.methods({
-    'tasks.insert'(text, list) {
+    'tasks.insert'(text, listId) {
         check(text, String);
-        check(list, String);
+        check(listId, String);
 
         if (!Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
         }
 
+        const list = Lists.findOne(listId);
+        
         Tasks.insert({
-            list,
+            listId,
             text,
             createdAt: new Date(),
             owner: Meteor.userId(),
             username: Meteor.user().username,
-            private: true,
+            private: list.private,
         });
     },
     'tasks.remove'(taskId) {
@@ -40,7 +43,7 @@ Meteor.methods({
 
         const task = Tasks.findOne(taskId);
 
-        if (task.private && task.owner !== Meteor.userId()) {
+        if (task.owner !== Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
         }
 
