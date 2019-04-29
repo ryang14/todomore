@@ -2,6 +2,17 @@
     <div class="list">
         <header>
             <h1>{{ name }}</h1>
+
+            {{#if isOwner}}
+            <button class="toggle-private-list">
+                {{#if private}}
+                Private
+                {{else}}
+                Public
+                {{/if}}
+            </button>
+            {{/if}}
+
             <button class="delete-list">&times;</button>
         </header>
 

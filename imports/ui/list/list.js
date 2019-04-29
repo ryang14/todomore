@@ -22,6 +22,9 @@ Template.list.helpers({
 
         return Tasks.find({ list: { $eq: this.name } }, { sort: { priority: 1, createdAt: -1 } });
     },
+    isOwner() {
+        return this.owner === Meteor.userId();
+    },
 });
 
 Template.list.events({
@@ -42,7 +45,10 @@ Template.list.events({
     'change .hide-completed input'(event, instance) {
         instance.state.set('hideCompleted', event.target.checked);
     },
+    'click .toggle-private-list'() {
+      Meteor.call('lists.setPrivate', this._id, !this.private);
+    },
     'click .delete-list'() {
-      Meteor.call('lists.remove', this._id);
+        Meteor.call('lists.remove', this._id);
     },
 });
