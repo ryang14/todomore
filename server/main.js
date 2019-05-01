@@ -2,15 +2,15 @@ import { Meteor } from 'meteor/meteor';
 import '../imports/api/tasks.js';
 import '../imports/api/lists.js';
 
-var resetDailyTasks = new ScheduledTask('at 1:00 am', function () {
+var resetDailyTasks = new ScheduledTask('every day', function () {
   Meteor.call('tasks.reset', 'daily');
 });
 
-var resetWeeklyTasks = new ScheduledTask('at 1:00 am on the first day of the week', function () {
+var resetWeeklyTasks = new ScheduledTask('every week', function () {
   Meteor.call('tasks.reset', 'weekly');
 });
 
-var resetMonthlyTasks = new ScheduledTask('at 1:00 am on the first day of the month', function () {
+var resetMonthlyTasks = new ScheduledTask('every month', function () {
   Meteor.call('tasks.reset', 'monthly');
 });
 
