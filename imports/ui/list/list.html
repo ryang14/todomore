@@ -13,6 +13,8 @@
             </button>
 
             <button class="delete-list">&times;</button>
+
+            {{> share item=this type='list'}}
             {{else}}
             <div>{{username}}</div>
             {{/if}}

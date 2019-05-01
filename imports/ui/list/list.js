@@ -3,6 +3,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tasks } from '../../api/tasks.js';
 
 import '../task/task.js';
+import '../share/share.js';
 import './list.css';
 import './list.html';
 

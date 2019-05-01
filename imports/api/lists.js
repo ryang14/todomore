@@ -11,6 +11,7 @@ if (Meteor.isServer) {
         return Lists.find({
             $or: [
                 { private: { $ne: true } },
+                { sharedWith: this.userId },
                 { owner: this.userId },
             ],
         });
@@ -70,5 +71,18 @@ Meteor.methods({
     
             Tasks.update(task._id, { $set: { checked: false } });
         });
+    },
+    'lists.shareWith'(listId, userName) {
+        check(listId, String);
+        check(userName, String);
+
+        const list = Lists.findOne(listId);
+        const user = Meteor.users.findOne({username: userName})
+
+        if (list.owner !== Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Lists.update(list._id, { $push: { sharedWith: user._id } });
     },
 });

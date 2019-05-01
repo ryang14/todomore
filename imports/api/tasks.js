@@ -11,6 +11,7 @@ if (Meteor.isServer) {
         return Tasks.find({
             $or: [
                 { private: { $ne: true } },
+                { sharedWith: this.userId },
                 { owner: this.userId },
             ],
         });
@@ -55,7 +56,7 @@ Meteor.methods({
 
         const task = Tasks.findOne(taskId);
 
-        if (task.private && task.owner !== Meteor.userId()) {
+        if (task.private && task.owner !== Meteor.userId() && !task.sharedWith.includes(Meteor.userId())) {
             throw new Meteor.Error('not-authorized');
         }
 
@@ -97,5 +98,18 @@ Meteor.methods({
     
             Tasks.update(task._id, { $set: { checked: false } });
         });
+    },
+    'tasks.shareWith'(taskId, userName) {
+        check(taskId, String);
+        check(userName, String);
+
+        const task = Tasks.findOne(taskId);
+        const user = Meteor.users.findOne({username: userName})
+
+        if (task.owner !== Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Tasks.update(task._id, { $push: { sharedWith: user._id } });
     },
 });

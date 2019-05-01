@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
  
 import './task.css';
+import '../share/share.js';
 import './task.html';
 
 Template.task.helpers({
