@@ -23,4 +23,4 @@ accounts-base
 accounts-ui
 accounts-password
 
-aldeed:scheduled-tasks
+littledata:synced-cron

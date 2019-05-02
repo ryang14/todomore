@@ -2,20 +2,40 @@ import { Meteor } from 'meteor/meteor';
 import '../imports/api/tasks.js';
 import '../imports/api/lists.js';
 
-var resetDailyTasks = new ScheduledTask('every day', function () {
-  Meteor.call('tasks.reset', 'daily');
+SyncedCron.config({
+  utc: false,
 });
 
-var resetWeeklyTasks = new ScheduledTask('every week', function () {
-  Meteor.call('tasks.reset', 'weekly');
+SyncedCron.add({
+  name: 'Reset daily tasks',
+  schedule: function(parser) {
+    return parser.text('at 1:00 am');
+  }, 
+  job: function() {
+    Meteor.call('tasks.reset', 'daily');
+  }
 });
 
-var resetMonthlyTasks = new ScheduledTask('every month', function () {
-  Meteor.call('tasks.reset', 'monthly');
+SyncedCron.add({
+  name: 'Reset weekly tasks',
+  schedule: function(parser) {
+    return parser.text('at 1:00 am on the first day of the week');
+  }, 
+  job: function() {
+    Meteor.call('tasks.reset', 'weekly');
+  }
+});
+
+SyncedCron.add({
+  name: 'Reset monthly tasks',
+  schedule: function(parser) {
+    return parser.text('at 1:00 am on the first day of the month');
+  }, 
+  job: function() {
+    Meteor.call('tasks.reset', 'monthly');
+  }
 });
 
 Meteor.startup(() => {
-  resetDailyTasks.start();
-  resetWeeklyTasks.start();
-  resetMonthlyTasks.start();
+  SyncedCron.start();
 });
