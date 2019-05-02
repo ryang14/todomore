@@ -47,6 +47,7 @@ Meteor.methods({
             owner: Meteor.userId(),
             username: Meteor.user().username,
             private: list.private,
+            sharedWith: list.sharedWith,
         });
     },
     'tasks.remove'(taskId) {
