@@ -45,6 +45,18 @@ Meteor.methods({
             private: true,
         });
     },
+    'lists.edit'(listId, text) {
+        check(listId, String);
+        check(text, String);
+
+        const list = Lists.findOne(listId);
+
+        if (list.owner !== Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Lists.update(listId, { $set: { name: text } });
+    },
     'lists.remove'(listId) {
         check(listId, String);
 

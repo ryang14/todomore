@@ -1,7 +1,7 @@
 <template name="list">
     <div class="list">
         <header>
-            <h1>{{ name }}</h1>
+            <h1 class="name" contenteditable="{{isEditable}}">{{ name }}</h1>
 
             {{#if isOwner}}
             <button class="toggle-private-list">

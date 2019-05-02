@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { ReactiveVar } from 'meteor/reactive-var';
 import { Tasks } from '../../api/tasks.js';
 
 import '../task/task.js';
@@ -9,6 +10,7 @@ import './list.html';
 
 Template.list.onCreated(function bodyOnCreated() {
     this.state = new ReactiveDict();
+    this.editable = new ReactiveVar();
     Meteor.subscribe('tasks');
 });
 
@@ -24,6 +26,9 @@ Template.list.helpers({
     },
     isOwner() {
         return this.owner === Meteor.userId();
+    },
+    isEditable() {
+      return this.owner === Meteor.userId() && Template.instance().editable.get();
     },
 });
 
@@ -50,5 +55,19 @@ Template.list.events({
     },
     'click .delete-list'() {
         Meteor.call('lists.remove', this._id);
+    },
+    'click .name'() {
+      Template.instance().editable.set(true);
+    },
+    'keydown .name'() {
+      if (event.key == "Enter") {
+        event.preventDefault();
+        Meteor.call('lists.edit', this._id, event.target.innerText);
+        Template.instance().editable.set(false);
+      }
+    },
+    'blur .name'() {
+      Meteor.call('lists.edit', this._id, event.target.innerText);
+      Template.instance().editable.set(false);
     },
 });

@@ -2,7 +2,7 @@
     <li class="task {{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
         <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
 
-        <span class="text">{{text}}</span>
+        <span class="text" contenteditable="{{isEditable}}">{{text}}</span>
 
         {{#if isOwner}}
         <button class="delete">&times;</button>

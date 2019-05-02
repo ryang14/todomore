@@ -50,6 +50,18 @@ Meteor.methods({
             sharedWith: list.sharedWith,
         });
     },
+    'tasks.edit'(taskId, text) {
+        check(taskId, String);
+        check(text, String);
+
+        const task = Tasks.findOne(taskId);
+
+        if (task.owner !== Meteor.userId()) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        Tasks.update(taskId, { $set: { text: text } });
+    },
     'tasks.remove'(taskId) {
         check(taskId, String);
 
