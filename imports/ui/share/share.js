@@ -4,7 +4,6 @@ import './share.html';
 
 Template.share.helpers({
     isOwner() {
-        console.log(this);
         return this.item.owner === Meteor.userId();
     },
     sharedWith() {
