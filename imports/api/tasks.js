@@ -8,10 +8,20 @@ export const Tasks = new Mongo.Collection('tasks');
 if (Meteor.isServer) {
     // This code only runs on the server
     Meteor.publish('tasks', function tasksPublication() {
+        // Only use userId if user is signed in
+        if (Meteor.userId()) {
+            return Tasks.find({
+                $or: [
+                    { private: { $ne: true } },
+                    { sharedWith: this.userId },
+                    { owner: this.userId },
+                ],
+            });
+        }
+        
         return Tasks.find({
             $or: [
                 { private: { $ne: true } },
-                { sharedWith: this.userId },
                 { owner: this.userId },
             ],
         });
