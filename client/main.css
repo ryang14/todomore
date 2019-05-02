@@ -1,7 +1,14 @@
-#login-buttons a {
+  #login-buttons a {
     text-decoration: none;
     color: inherit;
-    margin-right: 70px;
+  }
+
+  #login-buttons .login-close-text {
+    float: right;
+  }
+
+  #login-dropdown-list {
+    position: relative;
   }
 
   @media (max-width: 768px) {
@@ -9,5 +16,9 @@
         text-decoration: none;
         color: inherit;
         margin-left: 15px;
+      }
+
+      #login-buttons .login-close-text {
+        float: left;
       }
   }
