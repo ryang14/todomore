@@ -48,6 +48,7 @@ Meteor.methods({
             username: Meteor.user().username,
             private: list.private,
             sharedWith: list.sharedWith,
+            sharedWithUsernames: list.sharedWithUsernames,
         });
     },
     'tasks.edit'(taskId, text) {
@@ -133,6 +134,10 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized');
         }
 
+        // Make sure the requested user has a valid ID
+        check(user._id, String);
+
         Tasks.update(task._id, { $push: { sharedWith: user._id } });
+        Tasks.update(task._id, { $push: { sharedWithUsernames: user.username } });
     },
 });

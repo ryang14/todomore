@@ -105,6 +105,10 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized');
         }
 
+        // Make sure the requested user has a valid ID
+        check(user._id, String);
+
         Lists.update(list._id, { $push: { sharedWith: user._id } });
+        Lists.update(list._id, { $push: { sharedWithUsernames: user.username } });
     },
 });

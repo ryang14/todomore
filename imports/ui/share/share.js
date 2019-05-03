@@ -7,7 +7,7 @@ Template.share.helpers({
         return this.item.owner === Meteor.userId();
     },
     sharedWith() {
-        return this.item.sharedWith;
+        return this.item.sharedWithUsernames;
     },
 });
 
