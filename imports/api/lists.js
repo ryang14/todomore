@@ -90,7 +90,7 @@ Meteor.methods({
             if (!Meteor.isServer && task.owner !== Meteor.userId()) {
                 throw new Meteor.Error('not-authorized');
             }
-    
+
             Tasks.update(task._id, { $set: { checked: false } });
         });
     },
@@ -99,7 +99,7 @@ Meteor.methods({
         check(userName, String);
 
         const list = Lists.findOne(listId);
-        const user = Meteor.users.findOne({username: userName})
+        const user = Meteor.users.findOne({ username: userName })
 
         if (list.owner !== Meteor.userId()) {
             throw new Meteor.Error('not-authorized');
@@ -108,7 +108,9 @@ Meteor.methods({
         // Make sure the requested user has a valid ID
         check(user._id, String);
 
-        Lists.update(list._id, { $push: { sharedWith: user._id } });
-        Lists.update(list._id, { $push: { sharedWithUsernames: user.username } });
+        if (user._id != Meteor.userId() && list.sharedWith.includes(user._id)) {
+            Lists.update(list._id, { $push: { sharedWith: user._id } });
+            Lists.update(list._id, { $push: { sharedWithUsernames: user.username } });
+        }
     },
 });

@@ -137,7 +137,9 @@ Meteor.methods({
         // Make sure the requested user has a valid ID
         check(user._id, String);
 
-        Tasks.update(task._id, { $push: { sharedWith: user._id } });
-        Tasks.update(task._id, { $push: { sharedWithUsernames: user.username } });
+        if (user._id != Meteor.userId() && task.sharedWith.includes(user._id)) {
+            Tasks.update(task._id, { $push: { sharedWith: user._id } });
+            Tasks.update(task._id, { $push: { sharedWithUsernames: user.username } });
+        }
     },
 });
