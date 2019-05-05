@@ -15,14 +15,16 @@
                     <h5 class="modal-title" id="shareModalLabel">Share</h5>
                 </div>
                 <div class="modal-body">
-                    Shared with: {{sharedWith}}
+                    Shared with:
+                    {{#each sharedWith}}
+                    {{this.name}} <button class="unshare">&times;</button>
+                    {{/each}}
                     <form class="share-with">
-                        <input type="user" name="user" placeholder="Type a username to share with" />
+                        <input type="user" name="user" placeholder="Type a username to share" />
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>

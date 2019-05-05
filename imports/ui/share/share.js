@@ -2,12 +2,23 @@ import { Template } from 'meteor/templating';
 
 import './share.html';
 
+Template.share.onCreated(function bodyOnCreated() {
+    Meteor.subscribe('AllUserData');
+});
+
 Template.share.helpers({
     isOwner() {
-        return this.item.owner === Meteor.userId();
+        return Meteor.user().owns.includes(this._id);
     },
     sharedWith() {
-        return this.item.sharedWithUsernames;
+        const users = Meteor.users.find({canAccess: this._id});
+
+        var usernames = [];
+        users.forEach(user => {
+            usernames.push({ name: user.username, id: this._id });
+        });
+
+        return usernames;
     },
 });
 
@@ -20,10 +31,12 @@ Template.share.events({
         const target = event.target;
         const user = target.user.value;
 
-        // Insert a task into the collection
-        Meteor.call(this.type + 's.shareWith', this.item._id, user);
+        Meteor.call('user.shareWith', this._id, user);
 
         // Clear form
         target.user.value = '';
+    },
+    'click .unshare'() {
+        Meteor.call('user.unshareWith', this.id, this.name);
     },
 });

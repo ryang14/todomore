@@ -12,6 +12,7 @@ Template.list.onCreated(function bodyOnCreated() {
     this.state = new ReactiveDict();
     this.editable = new ReactiveVar();
     Meteor.subscribe('tasks');
+    Meteor.subscribe('userData');
 });
 
 Template.list.helpers({
@@ -25,10 +26,10 @@ Template.list.helpers({
         return Tasks.find({ listId: { $eq: this._id } }, { sort: { priority: 1, createdAt: -1 } });
     },
     isOwner() {
-        return this.owner === Meteor.userId();
+        return Meteor.user().owns.includes(this._id);
     },
     isEditable() {
-      return this.owner === Meteor.userId() && Template.instance().editable.get();
+      return Meteor.user().owns.includes(this._id) && Template.instance().editable.get();
     },
 });
 
@@ -49,9 +50,6 @@ Template.list.events({
     },
     'change .hide-completed input'(event, instance) {
         instance.state.set('hideCompleted', event.target.checked);
-    },
-    'click .toggle-private-list'() {
-      Meteor.call('lists.setPrivate', this._id, !this.private);
     },
     'click .delete-list'() {
         Meteor.call('lists.remove', this._id);

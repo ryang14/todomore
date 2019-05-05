@@ -4,19 +4,11 @@
             <h1 class="name" contenteditable="{{isEditable}}">{{ name }}</h1>
 
             {{#if isOwner}}
-            <button class="toggle-private-list">
-                {{#if private}}
-                Private
-                {{else}}
-                Public
-                {{/if}}
-            </button>
-
             <button class="delete-list">&times;</button>
 
-            {{> share item=this type='list'}}
+            {{> share}}
             {{else}}
-            <div>{{username}}</div>
+            <div>{{createdBy}}</div>
             {{/if}}
         </header>
 

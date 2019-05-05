@@ -9,14 +9,15 @@ import './task.html';
 Template.task.onCreated(function bodyOnCreated() {
   this.editable = new ReactiveVar();
   this.editable.set(false);
+  Meteor.subscribe('userData');
 });
 
 Template.task.helpers({
   isOwner() {
-    return this.owner === Meteor.userId();
+    return Meteor.user().owns.includes(this.listId);
   },
   isEditable() {
-    return this.owner === Meteor.userId() && Template.instance().editable.get();
+    return Meteor.user().owns.includes(this.listId) && Template.instance().editable.get();
   },
   recurring_once() {
     return this.recurring === "once" ? 'selected' : '';
