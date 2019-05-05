@@ -9,8 +9,8 @@ if (Meteor.isServer) {
     });
 
     Meteor.publish("AllUserData", function () {
-        return Meteor.users.find({ },
-            { fields: { 'owns': 1, 'canAccess': 1 } });
+        return Meteor.users.find({},
+            { fields: { 'username': 1, 'owns': 1, 'canAccess': 1 } });
     });
 }
 
@@ -19,22 +19,22 @@ Meteor.methods({
         check(id, String);
         check(username, String);
 
-        const user = Meteor.users.findOne({ username: username })
-
         if (!Meteor.user().owns.includes(id)) {
             throw new Meteor.Error('not-authorized');
         }
 
-        if (user.owns.includes(id) || user.canAccess.includes(id)) {
+        const user = Meteor.users.findOne({ username: username })
+
+        if (!user) {
             throw new Meteor.Error('not-authorized');
         }
 
-        // Make sure the requested user has a valid ID
-        check(user._id, String);
+        if ((user.owns && user.owns.includes(id)) || (user.canAccess && user.canAccess.includes(id))) {
+            throw new Meteor.Error('not-authorized');
+        }
 
         Meteor.users.update(user._id, { $push: { canAccess: id } });
     },
-
     'user.unshareWith'(id, username) {
         check(id, String);
         check(username, String);
