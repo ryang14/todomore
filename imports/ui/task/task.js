@@ -44,7 +44,7 @@ Template.task.events({
   'click .toggle-private'() {
     Meteor.call('tasks.setPrivate', this._id, !this.private);
   },
-  'change .recurring'() {
+  'change .recurring'(event) {
     Meteor.call('tasks.setRecurring', this._id, event.target.value);
   },
   'click .text'() {
