@@ -14,10 +14,10 @@ Template.task.onCreated(function bodyOnCreated() {
 
 Template.task.helpers({
   isOwner() {
-    return Meteor.user().owns && Meteor.user().owns.includes(this.listId);
+    return Meteor.user().owns && (Meteor.user().owns.includes(this.listId) || Meteor.user().owns.includes(this._id));
   },
   isEditable() {
-    return Meteor.user().owns && Meteor.user().owns.includes(this.listId) && Template.instance().editable.get();
+    return Meteor.user().owns && (Meteor.user().owns.includes(this.listId) || Meteor.user().owns.includes(this._id)) && Template.instance().editable.get();
   },
   recurring_once() {
     return this.recurring === "once" ? 'selected' : '';
@@ -50,14 +50,14 @@ Template.task.events({
   'click .text'() {
     Template.instance().editable.set(true);
   },
-  'keydown .text'() {
-    if (event.key == "Enter") {
+  'keydown .text'(event) {
+    if (event.keyCode === 13) {
       event.preventDefault();
       Meteor.call('tasks.edit', this._id, event.target.innerText);
       Template.instance().editable.set(false);
     }
   },
-  'blur .text'() {
+  'blur .text'(event) {
     Meteor.call('tasks.edit', this._id, event.target.innerText);
     Template.instance().editable.set(false);
   },

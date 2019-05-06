@@ -38,6 +38,8 @@ Meteor.methods({
             text,
             createdAt: new Date(),
             createdBy: Meteor.user().username,
+        }, (error, response) => {
+            if(!error) Meteor.users.update(Meteor.userId(), { $push: { owns: response } });
         });
     },
     'tasks.edit'(taskId, text) {
@@ -46,7 +48,7 @@ Meteor.methods({
 
         const task = Tasks.findOne(taskId);
 
-        if (!Meteor.user().owns.includes(task.listId)) {
+        if (!Meteor.user().owns.includes(task.listId) && !Meteor.user().owns.includes(task._id)) {
             throw new Meteor.Error('not-authorized');
         }
 
@@ -57,7 +59,7 @@ Meteor.methods({
 
         const task = Tasks.findOne(taskId);
 
-        if (!Meteor.user().owns.includes(task.listId)) {
+        if (!Meteor.user().owns.includes(task.listId) && !Meteor.user().owns.includes(task._id)) {
             throw new Meteor.Error('not-authorized');
         }
 
@@ -81,7 +83,7 @@ Meteor.methods({
 
         const task = Tasks.findOne(taskId);
 
-        if (!Meteor.user().owns.includes(task.listId)) {
+        if (!Meteor.user().owns.includes(task.listId) && !Meteor.user().owns.includes(task._id)) {
             throw new Meteor.Error('not-authorized');
         }
 
