@@ -30,13 +30,13 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized');
         }
 
-        const id = Lists.insert({
+        Lists.insert({
             name,
             createdAt: new Date(),
             createdBy: Meteor.user().username,
+        }, (error, response) => {
+            if(!error) Meteor.users.update(Meteor.userId(), { $push: { owns: response } });
         });
-
-        Meteor.users.update(Meteor.userId(), { $push: { owns: id } });
     },
     'lists.edit'(listId, text) {
         check(listId, String);

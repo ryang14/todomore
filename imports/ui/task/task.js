@@ -14,10 +14,10 @@ Template.task.onCreated(function bodyOnCreated() {
 
 Template.task.helpers({
   isOwner() {
-    return Meteor.user().owns.includes(this.listId);
+    return Meteor.user().owns && Meteor.user().owns.includes(this.listId);
   },
   isEditable() {
-    return Meteor.user().owns.includes(this.listId) && Template.instance().editable.get();
+    return Meteor.user().owns && Meteor.user().owns.includes(this.listId) && Template.instance().editable.get();
   },
   recurring_once() {
     return this.recurring === "once" ? 'selected' : '';

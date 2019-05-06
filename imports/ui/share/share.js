@@ -8,7 +8,7 @@ Template.share.onCreated(function bodyOnCreated() {
 
 Template.share.helpers({
     isOwner() {
-        return Meteor.user().owns.includes(this._id);
+        return Meteor.user().owns && Meteor.user().owns.includes(this._id);
     },
     sharedWith() {
         const users = Meteor.users.find({canAccess: this._id});
