@@ -1,3 +1,18 @@
+  .titlebar {
+    padding: 10px;
+    background: black;
+    color: grey;
+  }
+  
+  .title {
+    display: inline;
+  }
+  
+  #login-buttons {
+    margin: 10px;
+    float: right;
+  }
+
   #login-buttons a {
     text-decoration: none;
     color: inherit;
@@ -9,16 +24,5 @@
 
   #login-dropdown-list {
     position: relative;
-  }
-
-  @media (max-width: 768px) {
-    #login-buttons a {
-        text-decoration: none;
-        color: inherit;
-        margin-left: 15px;
-      }
-
-      #login-buttons .login-close-text {
-        float: left;
-      }
+    margin-top: -15px
   }
