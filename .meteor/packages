@@ -24,3 +24,4 @@ accounts-ui
 accounts-password
 
 littledata:synced-cron
+peerlibrary:reactive-publish

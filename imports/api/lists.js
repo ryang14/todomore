@@ -12,11 +12,13 @@ if (Meteor.isServer) {
             throw new Meteor.Error('not-authorized');
         }
 
-        return Lists.find({
-            $or: [
-                { _id: { $in: Meteor.user().owns } },
-                { _id: { $in: Meteor.user().canAccess } },
-            ],
+        this.autorun(function (computation) {
+            return Lists.find({
+                $or: [
+                    { _id: { $in: Meteor.user().owns } },
+                    { _id: { $in: Meteor.user().canAccess } },
+                ],
+            });
         });
     });
 }
@@ -35,7 +37,7 @@ Meteor.methods({
             createdAt: new Date(),
             createdBy: Meteor.user().username,
         }, (error, response) => {
-            if(!error) Meteor.users.update(Meteor.userId(), { $push: { owns: response } });
+            if (!error) Meteor.users.update(Meteor.userId(), { $push: { owns: response } });
         });
     },
     'lists.edit'(listId, text) {
