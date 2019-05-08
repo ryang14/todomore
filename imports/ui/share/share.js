@@ -12,7 +12,7 @@ Template.share.helpers({
         return Meteor.user().owns && Meteor.user().owns.includes(this._id);
     },
     sharedWith() {
-        return Meteor.users.find({ canAccess: this._id }).fetch().map(function(user) { return { name: user.username, id: this._id }; });
+        return Meteor.users.find({ canAccess: this._id }).fetch().map((user) => { return { name: user.username, id: this._id }; });
     },
 });
 

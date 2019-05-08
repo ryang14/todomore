@@ -3,19 +3,17 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 if (Meteor.isServer) {
-    Meteor.publish("userData", function () {
-        return Meteor.users.find({ _id: Meteor.userId },
-            { fields: { 'owns': 1, 'canAccess': 1 } });
+    Meteor.publish("userData", function() {
+        return Meteor.users.find({ _id: Meteor.userId }, { fields: { 'owns': 1, 'canAccess': 1 } });
     });
 
-    Meteor.publish("AllUserData", function () {
-        return Meteor.users.find({},
-            { fields: { 'username': 1, 'owns': 1, 'canAccess': 1 } });
+    Meteor.publish("AllUserData", function() {
+        return Meteor.users.find({}, { fields: { 'username': 1, 'owns': 1, 'canAccess': 1 } });
     });
 }
 
 Meteor.methods({
-    'user.shareWith'(id, username) {
+    'user.shareWith' (id, username) {
         check(id, String);
         check(username, String);
 
@@ -26,16 +24,12 @@ Meteor.methods({
         const user = Meteor.users.findOne({ username: username })
 
         if (!user) {
-            throw new Meteor.Error('not-authorized');
+            throw new Meteor.Error('not-found');
         }
 
-        if ((user.owns && user.owns.includes(id)) || (user.canAccess && user.canAccess.includes(id))) {
-            throw new Meteor.Error('not-authorized');
-        }
-
-        Meteor.users.update(user._id, { $push: { canAccess: id } });
+        if (!user.owns.includes(id)) Meteor.users.update(user._id, { $addToSet: { canAccess: id } });
     },
-    'user.unshareWith'(id, username) {
+    'user.unshareWith' (id, username) {
         check(id, String);
         check(username, String);
 
