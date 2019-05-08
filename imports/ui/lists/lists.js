@@ -3,6 +3,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { Lists } from '../../api/lists.js';
 
 import '../list/list.js';
+import './lists.css';
 import './lists.html';
 
 Template.lists.onCreated(function bodyOnCreated() {
@@ -17,7 +18,7 @@ Template.lists.helpers({
 });
 
 Template.lists.events({
-    'submit .new-list'(event) {
+    'submit .new-list' (event) {
         // Prevent default browser form submit
         event.preventDefault();
 

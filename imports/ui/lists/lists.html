@@ -1,15 +1,17 @@
 <template name="lists">
     <div class="row">
+        {{#if currentUser}}
+        <form class="new-list">
+            <input type="text" name="text" placeholder="Type to add new lists" />
+        </form>
+        {{/if}}
+    </div>
+
+    <div class="row">
         {{#each lists}}
         <div class="col-sm-6">
             {{> list}}
         </div>
         {{/each}}
     </div>
-
-    {{#if currentUser}}
-    <form class="new-list">
-        <input type="text" name="text" placeholder="Type to add new lists" />
-    </form>
-    {{/if}}
 </template>

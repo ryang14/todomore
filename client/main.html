@@ -1,22 +1,20 @@
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>To Do More</title>
+    <title>To Do More</title>
 </head>
 
 <body>
-  <header class="titlebar">
-    <h1 class="title">To Do More</h1>
+    <header class="titlebar">
+        <h1 class="title">To Do More</h1>
 
-    {{> loginButtons}}
-  </header>
+        {{> loginButtons}}
+    </header>
 
-  <div class="container" style="margin-top:50px">
-    {{#if currentUser}}
-    {{> lists}}
-    {{/if}}
-  </div>
+    <div class="container">
+        {{#if currentUser}} {{> lists}} {{/if}}
+    </div>
 
 </body>
