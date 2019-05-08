@@ -1,5 +1,6 @@
 import { Template } from 'meteor/templating';
 
+import './share.css';
 import './share.html';
 
 Template.share.onCreated(function bodyOnCreated() {
@@ -11,7 +12,7 @@ Template.share.helpers({
         return Meteor.user().owns && Meteor.user().owns.includes(this._id);
     },
     sharedWith() {
-        const users = Meteor.users.find({canAccess: this._id});
+        const users = Meteor.users.find({ canAccess: this._id });
 
         var usernames = [];
         users.forEach(user => {
@@ -23,7 +24,7 @@ Template.share.helpers({
 });
 
 Template.share.events({
-    'submit .share-with'(event) {
+    'submit .share-with' (event) {
         // Prevent default browser form submit
         event.preventDefault();
 
@@ -36,7 +37,7 @@ Template.share.events({
         // Clear form
         target.user.value = '';
     },
-    'click .unshare'() {
+    'click .unshare' () {
         Meteor.call('user.unshareWith', this.id, this.name);
     },
 });
